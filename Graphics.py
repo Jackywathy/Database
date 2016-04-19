@@ -1,9 +1,10 @@
 import Database as base
 from tkinter import *
 import string
+import datetime
 database = base.Database()
 # initatve variables
-
+current_year = 2016
 
 
 #
@@ -20,6 +21,7 @@ def read_date1(*args):
     global date1_frame
     global date1_error
     global dateitem
+    global display_date
 
     date1 = date1In.get()
     stripped = date1
@@ -28,18 +30,26 @@ def read_date1(*args):
             stripped = stripped.replace(i,'')
 
         print(stripped)
-        if len(stripped) == 4:
-            dateitem = (int(stripped[:2]),int(stripped[2:]))
-        elif len(stripped) == 6:
-            dateitem = (int(stripped[:2]), int(stripped[2:4]),int('20' + stripped[4:]))
-        elif len(stripped) == 8:
-            dateitem = (int(stripped[:2]), int(stripped[2:4]),int(stripped[4:]))
 
-        else:
-            date1_error = Button(date1_frame, text="Error-Length wrong", command=lambda: date1_error.grid_forget())
+
+        try:
+            if len(stripped) == 4:
+                dateitem = datetime.date(current_year,int(stripped[2:]),int(stripped[:2]))
+            elif len(stripped) == 6:
+                dateitem = datetime.date(int('20' + stripped[4:]) , int(stripped[2:4]) , int(stripped[:2]))
+            elif len(stripped) == 8:
+                dateitem = datetime.date(int(stripped[4:]), int(stripped[2:4]), int(stripped[:2]))
+
+            else:
+                date1_error = Button(date1_frame, text="Error-Length wrong", command=lambda: date1_error.grid_forget())
+                date1_error.grid(row=2)
+        except ValueError:
+            date1_error = Button(date1_frame, text="Error-Invalid Y/M/D", command=lambda: date1_error.grid_forget())
             date1_error.grid(row=2)
     try:
         print(dateitem)
+        display_date.set(str(dateitem))
+
     except:
         pass
 
@@ -49,6 +59,9 @@ def read_date1(*args):
 def find():
     findFrame.pack()
     addFrame.pack_forget()
+    date1_frame.pack_forget()
+    moneyframe.pack_forget()
+    infoframe.pack_forget()
     clear_content()
 
 def bind_all(event):
@@ -95,8 +108,14 @@ def start_sell():
 
 
 root = Tk()
+#constants
 isbuy = StringVar()
 isbuy.set('Buy Order')
+abs_amount = StringVar()
+abs_amount.set('$0')
+display_date = StringVar()
+
+
 
 
 # buy = True, sell = False
@@ -135,7 +154,7 @@ R2.grid(row=0,column=1)
 # init the Frame
 date1_frame = Frame(content)
 # first label
-date_label = Label(date1_frame, text='DATE', justify=CENTER)
+date_label = Label(date1_frame, text='Enter Date', justify=CENTER)
 date_label.grid(row=0)
 # date entry
 date1In = Entry(date1_frame)
@@ -149,6 +168,7 @@ def read_money():
     global moneyIn
     global money_error
     global moneyitem
+    global abs_amount
     val = moneyIn.get()
     for i in string.punctuation:
         val = val.replace(i,'')
@@ -159,7 +179,7 @@ def read_money():
             money_error.grid(row=2)
         else:
             moneyitem = (isbuy.get(), int(val))
-
+        abs_amount.set('$' + val)
         print(moneyitem)
 
 
@@ -167,7 +187,7 @@ def read_money():
 # frame containing asking for money
 moneyframe = Frame(content)
 #first label
-money_label = Label(moneyframe,text="AMOUNT")
+money_label = Label(moneyframe,text="Enter Amount")
 money_label.grid(row=0)
 #money entry
 moneyIn = Entry(moneyframe)
@@ -182,9 +202,16 @@ moneyButton.grid(row=1,column = 1)
 infoframe = Frame(content)
 # Label
 
-info_label = Label(infoframe, textvariable=isbuy,width=40, font=("Helvetica", 36))
+info_label = Label(infoframe, textvariable=isbuy, font=("Helvetica", 24))
 info_label.grid(row=0)
 
+display_money_date = Frame(infoframe)
+display_money_date.grid(row = 1)
+
+info_label2 = Label(display_money_date,textvariable=abs_amount,font=("Helvetica", 30))
+info_label2.pack()
+info_label3 = Label(display_money_date,textvariable=display_date,font=("Helvetica", 20))
+info_label3.pack()
 #############################################################
 
 
