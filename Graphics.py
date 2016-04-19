@@ -4,8 +4,6 @@ import string
 database = base.Database()
 # initatve variables
 
-
-
 #
 def close(event):
     root.quit()
@@ -20,6 +18,8 @@ def read_date1(*args):
     global date1_frame
     global date1_error
     global dateitem
+
+
 
     date1 = date1In.get()
     stripped = date1
