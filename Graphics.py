@@ -99,11 +99,13 @@ def start_buy():
     global isbuy
     isbuy.set('Buy Order')
     print(isbuy)
+    read_money()
 
 def start_sell():
     global isbuy
     isbuy.set('Sell Order')
     print(isbuy)
+    read_money()
 
 
 
@@ -209,11 +211,15 @@ display_money_date = Frame(infoframe)
 display_money_date.grid(row = 1)
 
 info_label2 = Label(display_money_date,textvariable=abs_amount,font=("Helvetica", 30))
-info_label2.pack()
+
 info_label3 = Label(display_money_date,textvariable=display_date,font=("Helvetica", 20))
 info_label3.pack()
+info_label2.pack()
 #############################################################
-
+#############################################################
+#dump button
+Button(content, text='DUMP',command=lambda:print(moneyitem,display_date)).pack()
+#############################################################
 
 
 
