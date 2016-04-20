@@ -4,8 +4,11 @@ import string
 import datetime
 database = base.Database()
 # initatve variables
+<<<<<<< HEAD
 current_year = 2016
 
+=======
+>>>>>>> dd431640b328c6d18c26ad2bb4adc6f912eefebd
 
 #
 def close(event):
@@ -22,6 +25,8 @@ def read_date1(*args):
     global date1_error
     global dateitem
     global display_date
+
+
 
     date1 = date1In.get()
     stripped = date1
